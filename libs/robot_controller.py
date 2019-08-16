@@ -19,5 +19,52 @@ import time
 class Snatch3r(object):
     """Commands for the Snatch3r robot that might be useful in many different programs."""
     
-    # TODO: Implement the Snatch3r class as needed when working the sandox exercises
+    # : Implement the Snatch3r class as needed when working the sandox exercises
     # (and delete these comments)
+    def drive_inches(self, inc ,sp):
+        left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+        right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+
+        # Check that the motors are actually connected
+        assert left_motor.connected
+        assert right_motor.connected
+
+        stop_action = "brake"
+        degrees_per_inch = 90
+        motor_turns_needed_in_degrees = inc * degrees_per_inch
+        position_sp = motor_turns_needed_in_degrees
+
+        while position_sp != 0:
+
+            left_motor.run_to_rel_pos(speed_sp=sp, position_sp=position_sp, stop_action=stop_action)
+            right_motor.run_to_rel_pos(speed_sp=sp, position_sp=position_sp, stop_action=stop_action)
+
+            left_motor.wait_while(ev3.Motor.STATE_RUNNING)
+            ev3.Sound.beep().wait()
+            position_sp = 0
+
+    def turn_degrees(self, degrees_to_turn, turn_speed_sp):
+        left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+        right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+
+        # Check that the motors are actually connected
+        assert left_motor.connected
+        assert right_motor.connected
+
+        stop_action = "brake"
+
+        while degrees_to_turn != 0:
+
+            left_motor.run_to_rel_pos(speed_sp=turn_speed_sp, position_sp=-degrees_to_turn * 90/17, stop_action=stop_action)
+            right_motor.run_to_rel_pos(speed_sp=turn_speed_sp, position_sp=degrees_to_turn * 90/17, stop_action=stop_action)
+
+            left_motor.wait_while(ev3.Motor.STATE_RUNNING)
+            ev3.Sound.beep().wait()
+            degrees_to_turn = 0
+
+    def drive_polygon(self,number_of_sides, length, speed):
+        for k in range(number_of_sides):
+            self.drive_inches(length,speed)
+            self.turn_degrees(360/ number_of_sides, speed)
+
+

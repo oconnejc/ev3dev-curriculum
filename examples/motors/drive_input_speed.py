@@ -25,14 +25,15 @@ def main():
 
     time_s = 1  # Any value other than 0.
     while time_s != 0:
-        left_sp = int(input("Enter a speed for the left motor (0 to 900 dps): "))
-        right_sp = int(input("Enter a speed for the right motor (0 to 900 dps): "))
-        time_s = int(input("Enter a time to drive (seconds): "))
+        left_sp = 800
+        right_sp = 800
+        time_s = 5
         left_motor.run_forever(speed_sp=left_sp)
         right_motor.run_forever(speed_sp=right_sp)
         time.sleep(time_s)
         left_motor.stop()
         right_motor.stop(stop_action="brake")
+        time_s = 0
 
     print("Goodbye!")
     ev3.Sound.speak("Goodbye").wait()
