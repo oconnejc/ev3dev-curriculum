@@ -15,12 +15,12 @@ import ev3dev.ev3 as ev3
 import math
 import time
 
-
 class Snatch3r(object):
     """Commands for the Snatch3r robot that might be useful in many different programs."""
     
     # : Implement the Snatch3r class as needed when working the sandox exercises
     # (and delete these comments)
+
     def drive_inches(self, inc ,sp):
         left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
         right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
@@ -67,4 +67,59 @@ class Snatch3r(object):
             self.drive_inches(length,speed)
             self.turn_degrees(360/ number_of_sides, speed)
 
+    def arm_calibration(self):
+        touch_sensor = ev3.TouchSensor()
+        MAX_SPEED = 900
+        arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
+        assert arm_motor.connected
+        assert touch_sensor
+        arm_motor.run_forever(speed_sp=MAX_SPEED)
+        while not touch_sensor.is_pressed:
+            time.sleep(0.01)
+        arm_motor.stop()
+        print('arm is up')
+        ev3.Sound.beep().wait()
+
+        arm_revolutions_for_full_range = 14.2 * 360
+        arm_motor.run_to_rel_pos(position_sp=-arm_revolutions_for_full_range, speed_sp=MAX_SPEED)
+        arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        ev3.Sound.beep().wait()
+
+        arm_motor.position = 0
+        print('arm calibrated')
+
+    def arm_up(self):
+        MAX_SPEED = 900
+        arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
+        assert arm_motor.connected
+
+        touch_sensor = ev3.TouchSensor()
+        assert touch_sensor
+        arm_motor.run_forever(speed_sp=MAX_SPEED)
+        while not touch_sensor.is_pressed:
+            time.sleep(0.01)
+        arm_motor.stop()
+        print('arm is up')
+
+    def arm_down(self):
+        MAX_SPEED = 900
+        arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
+        assert arm_motor.connected
+
+        touch_sensor = ev3.TouchSensor()
+        assert touch_sensor
+        arm_motor.run_to_abs_pos(position_sp=0, speed_sp=MAX_SPEED)
+        arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+
+    def shutdown(self):
+        left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+        right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+        arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
+        left_motor.stop()
+        right_motor.stop()
+        arm_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+        print('goodbye')
+        ev3.Sound.speak("Goodbye").wait()
 

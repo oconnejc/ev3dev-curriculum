@@ -25,8 +25,8 @@
     -- Pressing the Back button will allow your program to end.  It should stop motors, turn on both green LEDs, and
        then print and say Goodbye.  You will need to implement a new robot method called shutdown to handle this task.
 
-Authors: David Fisher and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+Authors: David Fisher and Joe OConnell.
+"""  # done: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import ev3dev.ev3 as ev3
 import time
@@ -61,6 +61,20 @@ def main():
     # TODO: 4. Add the necessary IR handler callbacks as per the instructions above.
     # Remote control channel 1 is for driving the crawler tracks around (none of these functions exist yet below).
     # Remote control channel 2 is for moving the arm up and down (all of these functions already exist below).
+    left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+    right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+    rc1 = ev3.RemoteControl(channel=1)
+    rc1.on_red_up = lambda state: run_left(state,1)
+    rc1.on_red_down = lambda state: run_left(state,-1)
+    rc1.on_blue_up = lambda state: run_right(state,1)
+    rc1.on_blue_down = lambda state: run_right(state,-1)
+
+
+
+    rc2 = ev3.RemoteControl(channel=2)
+    rc2.on_red_up = lambda state: robot.arm_up()
+    rc2.on_red_down = lambda state: robot.arm_down()
+    rc2.on_blue_up = lambda state: robot.arm_calibration()
 
     # For our standard shutdown button.
     btn = ev3.Button()
@@ -71,6 +85,8 @@ def main():
     while dc.running:
         # TODO: 5. Process the RemoteControl objects.
         btn.process()
+        rc1.process()
+        rc2.process()
         time.sleep(0.01)
 
     # TODO: 2. Have everyone talk about this problem together then pick one  member to modify libs/robot_controller.py
@@ -138,6 +154,20 @@ def handle_shutdown(button_state, dc):
     """
     if button_state:
         dc.running = False
+
+def run_right(state, p_or_n):
+    right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+    if state:
+        right_motor.run_forever(speed_sp=p_or_n*600)
+    else:
+        right_motor.stop(stop_action='coast')
+
+def run_left(state, p_or_n):
+    left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+    if state:
+        left_motor.run_forever(speed_sp=p_or_n*600)
+    else:
+        left_motor.stop(stop_action='coast')
 
 # ----------------------------------------------------------------------
 # Calls  main  to start the ball rolling.
