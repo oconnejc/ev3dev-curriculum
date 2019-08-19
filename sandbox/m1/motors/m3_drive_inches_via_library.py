@@ -34,7 +34,7 @@ Authors: David Fisher and joe oconnell.
 
 import ev3dev.ev3 as ev3
 import robot_controller as robo
-
+import time
 
 def main():
     # --------------------------------------------------------------
@@ -50,14 +50,23 @@ def main():
 
     while True:
         speed_deg_per_second = 200
+        inches_target = 30
         if speed_deg_per_second == 0:
             break
-        inches_target = 20
         if inches_target == 0:
             break
 
         robot.drive_inches(inches_target, speed_deg_per_second)
+        speed_deg_per_second2 = 600
+        inches_target2 = 20
+        if speed_deg_per_second2 == 0:
+            break
+        if inches_target2 == 0:
+            break
+        robot.drive_inches(inches_target2, speed_deg_per_second2)
+
         ev3.Sound.beep().wait()  # Fun little beep
+        break
 
     print("Goodbye!")
     ev3.Sound.speak("Goodbye").wait()

@@ -6,7 +6,7 @@ import mqtt_remote_method_calls as com
 def main():
     mqtt_client = com.MqttClient()
     mqtt_client.connect_to_ev3()
-    mqtt_client.send_message("print", ['possible stab wound, pt wearing red'])
+    mqtt_client.send_message("print", ['possible stab wound, pt is a clear bottle'])
     root = tkinter.Tk()
     root.title("Pt Movement")
     frame1 = ttk.Frame(root, padding=20)

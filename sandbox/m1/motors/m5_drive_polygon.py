@@ -10,6 +10,7 @@ Authors: David Fisher and Joe OConnell.
 
 import ev3dev.ev3 as ev3
 import robot_controller as robo
+import time
 
 
 def main():
@@ -19,7 +20,8 @@ def main():
     ev3.Sound.speak("Drive polygon").wait()
     robot = robo.Snatch3r()
     robot.drive_polygon(3, 40, 400)
-
+    time.sleep(.5)
+    robot.drive_polygon(4, 30, 800)
         # : 2. Individually implement the code here to use your drive_inches and turn_degrees library methods to
         # drive a polygon with the correct number of sides. (Hint: You will add 3 lines of code. What are they?).
 

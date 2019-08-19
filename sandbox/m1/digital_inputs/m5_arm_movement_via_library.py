@@ -29,7 +29,7 @@ def main():
     print("--------------------------------------------")
     print(" Arm movement via library")
     print("--------------------------------------------")
-    ev3.Sound.speak("Arm movement via library").wait()
+
     robot = robo.Snatch3r()
 
     while True:

@@ -62,8 +62,10 @@ def main():
     assert left_motor.connected
     assert right_motor.connected
 
-    inches_target = 20
-    speed_sp = 200
+    #inches_target = 20
+    #speed_sp = 200
+    inches_target = 40
+    speed_sp = 800
     stop_action ="brake"
     degrees_per_inch = 90
     motor_turns_needed_in_degrees = inches_target * degrees_per_inch

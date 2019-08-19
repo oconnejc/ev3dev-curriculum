@@ -96,7 +96,7 @@ def main():
     print("--------------------------------------------")
     print("  Timed Driving")
     print("--------------------------------------------")
-    ev3.Sound.speak("Timed Driving").wait()
+    ev3.Sound.speak("Speed and distance driving").wait()
 
     # Connect two large motors on output ports B and C
     left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
@@ -106,8 +106,10 @@ def main():
     assert left_motor.connected
     assert right_motor.connected
 
-    distance = 20
-    speed = 200
+    #distance = 30
+    #speed = 600
+    distance = 10
+    speed = 300
     time_s = distance/speed*90
 
     if abs(speed) > 800:

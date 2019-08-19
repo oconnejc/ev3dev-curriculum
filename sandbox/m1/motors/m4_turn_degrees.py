@@ -54,6 +54,7 @@ Authors: David Fisher and Joe OConnell.
 
 import ev3dev.ev3 as ev3
 import robot_controller as robo
+import time
 
 
 def main():
@@ -71,6 +72,8 @@ def main():
 
 
     robot.turn_degrees(90, 400)
+    time.sleep(.5)
+    robot.turn_degrees(-120, 800)
     ev3.Sound.beep().wait()  # Fun little beep
 
     print("Goodbye!")
